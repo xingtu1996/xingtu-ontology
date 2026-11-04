@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>元宝卡片知识图 · 行途 XingTu</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  body { margin: 0; padding: 40px 20px; background: #fff; font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif; color: #1a1a1a; }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
+  h1 .accent { color: #F2644F; }
+  .meta { color: #7a8087; font-size: 13px; margin-bottom: 32px; line-height: 1.7; }
+  .chart { width: 100%; height: 360px; margin-bottom: 40px; }
+  .chart-title { font-size: 16px; font-weight: 600; margin: 0 0 12px; }
+  .footer { color: #7a8087; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>元宝卡片知识图 <span class="accent">· Raw 层的可视化</span></h1>
+  <div class="meta">
+    数据源：行途 vault 内元宝对话抓取，共 2643 张卡片（2025-09 ~ 2026-11）。<br>
+    脱敏口径：只保留月份与主题计数，不含任何卡片原文。<br>
+    这是三层知识模型中 L1 Raw 层的真实体量——关于"知识图有多大"，先有个数字感。
+  </div>
+
+  <div class="chart-title">月度卡片增量（L1 Raw 层的生长曲线）</div>
+  <div id="trend" class="chart"></div>
+
+  <div class="chart-title">主题分布（基于 1473 张分析卡）</div>
+  <div id="topic" class="chart"></div>
+
+  <div class="footer">
+    行途 XingTu · <a href="https://github.com/xingtu1996/xingtu-ontology" style="color:#F2644F">xingtu-ontology</a><br>
+    想知道 Raw 攒了这么多之后 Wiki 和 Schema 怎么搭？读 <a href="../../research/01-knowledge-graph/2026-11-三层知识模型_Raw-Wiki-Schema.md" style="color:#F2644F">三层知识模型笔记</a>。
+  </div>
+</div>
+
+<script>
+const orange = '#F2644F';
+const dark = '#1a1a1a';
+const gray = '#7a8087';
+
+// 月度趋势
+const trendChart = echarts.init(document.getElementById('trend'));
+fetch('data/monthly.json').then(r => r.json()).then(rows => {
+  trendChart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: { left: 50, right: 20, top: 30, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: rows.map(r => r.month),
+      axisLine: { lineStyle: { color: '#ddd' } },
+      axisLabel: { color: gray, fontSize: 12 }
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: { lineStyle: { color: '#f0f0f0' } },
+      axisLabel: { color: gray }
+    },
+    series: [{
+      type: 'line',
+      data: rows.map(r => r.count),
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 7,
+      lineStyle: { color: orange, width: 3 },
+      itemStyle: { color: orange },
+      areaStyle: {
+        color: {
+          type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+          colorStops: [
+            { offset: 0, color: 'rgba(242,100,79,0.25)' },
+            { offset: 1, color: 'rgba(242,100,79,0.02)' }
+          ]
+        }
+      }
+    }]
+  });
+});
+
+// 主题分布
+const topicChart = echarts.init(document.getElementById('topic'));
+fetch('data/meta.json').then(r => r.json()).then(meta => {
+  topicChart.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+    legend: {
+      orient: 'vertical', right: 20, top: 'center',
+      textStyle: { color: dark, fontSize: 12 }
+    },
+    color: [orange, '#1a1a1a', '#5a5a5a', '#9a9a9a', '#c4c4c4', '#e0e0e0', '#f0f0f0', '#f7f7f7'],
+    series: [{
+      type: 'pie',
+      radius: ['40%', '70%'],
+      center: ['40%', '50%'],
+      avoidLabelOverlap: true,
+      label: { show: false },
+      data: meta.topic_distribution.map(t => ({ name: t.topic, value: t.count }))
+    }]
+  });
+});
+
+window.addEventListener('resize', () => {
+  trendChart.resize();
+  topicChart.resize();
+});
+</script>
+</body>
+</html>

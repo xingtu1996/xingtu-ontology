@@ -1,0 +1,16 @@
+{
+  "source": "元宝卡片月度增量（脱敏：只计数量，不含原文）",
+  "total_cards": 2643,
+  "range": "2025-09 ~ 2026-11",
+  "topic_distribution": [
+    {"topic": "AI 编程/开发", "count": 320},
+    {"topic": "AI 工具/应用", "count": 315},
+    {"topic": "AI 模型/大模型", "count": 225},
+    {"topic": "其他/未分类", "count": 487},
+    {"topic": "个人成长/职场", "count": 55},
+    {"topic": "创业/商业", "count": 49},
+    {"topic": "家庭/育儿", "count": 14},
+    {"topic": "生活/消费", "count": 8}
+  ],
+  "topic_note": "主题分布基于 1473 张元宝分析卡（盘点报告口径），非全量 2643 卡"
+}

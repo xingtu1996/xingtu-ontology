@@ -1,0 +1,22 @@
+# 依赖与构建
+node_modules/
+dist/
+build/
+*.log
+
+# 环境与凭据
+.env
+.env.local
+*.key
+*.pem
+
+# 私有数据（绝不进公开仓）
+data/private/
+*.private.json
+yuanbao_cards.json
+
+# 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
