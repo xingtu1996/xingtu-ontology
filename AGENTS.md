@@ -8,7 +8,7 @@
 
 ## 不能碰的红线
 
-1. **隐私**：不出现中文真名、`Justin Li` 及变体、真实手机号、个人/雇主邮箱、任职公司名。对外统一"行途 XingTu"。提交前在 xingtu 工作区跑 `python3 tools/privacy_scan.py --fail-fast .`。
+1. **隐私**：不出现中文真名、英文名及变体（SAF-010 禁用）、真实手机号、个人/雇主邮箱、任职公司名。对外统一"行途 XingTu"。提交前在 xingtu 工作区跑 `python3 tools/privacy_scan.py --fail-fast .`。
 2. **发布时序**：公众号声明原创的排期稿全文不上本仓。已发文章只放"标题 + 300 字摘要 + 公众号链接"。
 3. **不搬他仓**：方法论在 xingtu-ai-engineering，ADR 在 xingtu-portfolio，真源素材在私有 vault。本仓只放脱敏实验样本。
 4. **不造后端**：demos 以静态 HTML + ECharts/CDN 为主，GitHub Pages 能直接跑。
